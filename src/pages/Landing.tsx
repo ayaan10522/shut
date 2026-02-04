@@ -14,9 +14,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
+import { Navbar } from '@/components/Navbar';
+
 export default function Landing() {
   return (
     <div className="min-h-screen bg-background">
+      <Navbar />
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Background gradient */}
@@ -51,6 +54,11 @@ export default function Landing() {
               <Button variant="heroOutline" size="xl" asChild>
                 <Link to="/signup/school">Register Your School</Link>
               </Button>
+            </div>
+
+            <div className="mt-6 animate-fade-up stagger-3">
+               <span className="text-muted-foreground">Already have an account? </span>
+               <Link to="/login" className="text-primary hover:underline font-medium">Log in</Link>
             </div>
           </div>
         </div>
@@ -165,6 +173,11 @@ export default function Landing() {
               >
                 <Link to="/signup/school">Register as School</Link>
               </Button>
+            </div>
+            
+            <div className="mt-6">
+               <span className="text-primary-foreground/80">Already have an account? </span>
+               <Link to="/login" className="text-white hover:underline font-medium">Log in</Link>
             </div>
           </div>
         </div>
