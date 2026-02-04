@@ -237,6 +237,31 @@ export async function getPostsForUser(userId: string): Promise<PostData[]> {
   return allPosts.filter(post => schoolIds.includes(post.schoolId));
 }
 
+export async function getPostsByCity(city: string): Promise<PostData[]> {
+  const [allPosts, allSchools] = await Promise.all([getAllPosts(), getAllSchools()]);
+  const schoolCityMap: Record<string, string | undefined> = {};
+  for (const school of allSchools) {
+    schoolCityMap[school.id] = school.city;
+  }
+  const cityLower = city.toLowerCase();
+  return allPosts.filter(post => {
+    const scCity = schoolCityMap[post.schoolId];
+    return scCity ? scCity.toLowerCase().includes(cityLower) : false;
+  });
+}
+
+export async function getTrendingPostsByCity(city: string): Promise<PostData[]> {
+  const cityPosts = await getPostsByCity(city);
+  return cityPosts.sort((a, b) => {
+    if (a.category === 'emergency' && b.category !== 'emergency') return -1;
+    if (a.category !== 'emergency' && b.category === 'emergency') return 1;
+    if ((b.likes || 0) !== (a.likes || 0)) {
+      return (b.likes || 0) - (a.likes || 0);
+    }
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  });
+}
+
 // ========== FOLLOW FUNCTIONS ==========
 
 export async function followSchool(userId: string, schoolId: string): Promise<void> {

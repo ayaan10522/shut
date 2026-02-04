@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/contexts/AuthContext';
-import { getAllPosts, getPostsForUser, type PostData } from '@/lib/firebase';
+import { getAllPosts, getPostsForUser, getTrendingPostsByCity, type PostData } from '@/lib/firebase';
 import { Link } from 'react-router-dom';
 import { Users, Plus } from 'lucide-react';
 import type { Post, PostCategory } from '@/types';
@@ -25,6 +25,8 @@ export default function Feed() {
   const [selectedCategory, setSelectedCategory] = useState<PostCategory | 'all'>('all');
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTrendingFallback, setIsTrendingFallback] = useState(false);
+  const [trendingCity, setTrendingCity] = useState<string | null>(null);
 
   useEffect(() => {
     loadPosts();
@@ -34,10 +36,18 @@ export default function Feed() {
     setIsLoading(true);
     try {
       let postsData: PostData[];
+      setIsTrendingFallback(false);
+      setTrendingCity(null);
       
       if (user && user.userType === 'user') {
         // Regular users see posts from followed schools
         postsData = await getPostsForUser(user.id);
+        if (postsData.length === 0 && user.city) {
+          // Fallback to trending posts in user's city
+          postsData = await getTrendingPostsByCity(user.city);
+          setIsTrendingFallback(true);
+          setTrendingCity(user.city);
+        }
       } else if (user && user.userType === 'school') {
         // Schools see all posts (including their own)
         postsData = await getAllPosts();
@@ -81,12 +91,19 @@ export default function Feed() {
           <h1 className="text-2xl font-bold text-foreground mb-2">Your Feed</h1>
           <p className="text-muted-foreground text-sm">
             {user?.userType === 'user' 
-              ? 'Updates from schools you follow'
+              ? (isTrendingFallback 
+                  ? `Trending updates in ${trendingCity}`
+                  : 'Updates from schools you follow')
               : user?.userType === 'school'
               ? 'All posts on the platform'
               : 'Latest updates from schools'
             }
           </p>
+          {isTrendingFallback && (
+            <div className="mt-2 text-xs text-muted-foreground">
+              You’re not following any schools yet. Showing trending posts from your city.
+            </div>
+          )}
         </div>
 
         {/* Category Filter */}
