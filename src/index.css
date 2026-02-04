@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* SchoolPost Design System - Trust & Clarity */
+    --background: 210 20% 98%;
+    --foreground: 210 40% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 40% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 11%;
+
+    /* Deep teal - trust & reliability */
+    --primary: 175 84% 32%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Light teal surface */
+    --secondary: 175 30% 94%;
+    --secondary-foreground: 175 84% 25%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 210 15% 45%;
+
+    --accent: 175 40% 92%;
+    --accent-foreground: 175 84% 25%;
+
+    /* Emergency - Warm amber/orange */
+    --destructive: 25 95% 53%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 20% 90%;
+    --input: 210 20% 90%;
+    --ring: 175 84% 32%;
+
+    --radius: 0.75rem;
+
+    /* Category colors */
+    --notice: 210 80% 55%;
+    --notice-foreground: 0 0% 100%;
+    
+    --exam: 280 70% 55%;
+    --exam-foreground: 0 0% 100%;
+    
+    --event: 150 60% 45%;
+    --event-foreground: 0 0% 100%;
+    
+    --holiday: 340 75% 55%;
+    --holiday-foreground: 0 0% 100%;
+    
+    --emergency: 25 95% 53%;
+    --emergency-foreground: 0 0% 100%;
+
+    /* School badge */
+    --school-badge: 175 84% 32%;
+    --school-badge-foreground: 0 0% 100%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 40% 8%;
+    --foreground: 210 20% 98%;
+
+    --card: 210 40% 10%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 210 40% 10%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 175 70% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 175 30% 15%;
+    --secondary-foreground: 175 60% 70%;
+
+    --muted: 210 30% 15%;
+    --muted-foreground: 210 15% 60%;
+
+    --accent: 175 30% 18%;
+    --accent-foreground: 175 60% 70%;
+
+    --destructive: 25 90% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 30% 18%;
+    --input: 210 30% 18%;
+    --ring: 175 70% 45%;
+
+    --notice: 210 75% 60%;
+    --exam: 280 65% 60%;
+    --event: 150 55% 50%;
+    --holiday: 340 70% 60%;
+    --emergency: 25 90% 55%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom animations */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-emergency {
+  0%, 100% {
+    box-shadow: 0 0 0 0 hsl(var(--emergency) / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px hsl(var(--emergency) / 0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out forwards;
+}
+
+.animate-pulse-emergency {
+  animation: pulse-emergency 2s infinite;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}
+
+/* Staggered animations */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }

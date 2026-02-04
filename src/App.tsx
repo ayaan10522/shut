@@ -1,0 +1,46 @@
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import Index from "./pages/Index";
+import SignupUser from "./pages/SignupUser";
+import SignupSchool from "./pages/SignupSchool";
+import Login from "./pages/Login";
+import Feed from "./pages/Feed";
+import Discover from "./pages/Discover";
+import CreatePost from "./pages/CreatePost";
+import Profile from "./pages/Profile";
+import Notifications from "./pages/Notifications";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/signup" element={<SignupUser />} />
+            <Route path="/signup/school" element={<SignupSchool />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/discover" element={<Discover />} />
+            <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/notifications" element={<Notifications />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
