@@ -201,6 +201,8 @@ export async function createPost(postData: Omit<PostData, 'id' | 'createdAt' | '
   return post;
 }
 
+// ========== INTERACTION FUNCTIONS ==========
+
 export async function getAllPosts(): Promise<PostData[]> {
   const dbRef = ref(database);
   const snapshot = await get(child(dbRef, 'posts'));
