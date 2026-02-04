@@ -40,7 +40,7 @@ export default function Landing() {
             
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 animate-fade-up stagger-2">
               No more WhatsApp chaos. No more missed notices. 
-              SchoolPost is the trusted platform where schools share official updates, 
+              EduNotice is the trusted platform where schools share official updates, 
               and parents stay informed.
             </p>
             
@@ -54,6 +54,12 @@ export default function Landing() {
               <Button variant="heroOutline" size="xl" asChild>
                 <Link to="/signup/school">Register Your School</Link>
               </Button>
+            </div>
+
+            <div className="mt-4 animate-fade-up stagger-3">
+              <Link to="/feed" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium flex items-center justify-center gap-1">
+                Browse posts as guest <ArrowRight className="h-3 w-3" />
+              </Link>
             </div>
 
             <div className="mt-6 animate-fade-up stagger-3">
@@ -191,10 +197,10 @@ export default function Landing() {
               <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground">
                 <GraduationCap className="h-4 w-4" />
               </div>
-              <span className="font-bold text-foreground">SchoolPost</span>
+              <span className="font-bold text-foreground">EduNotice</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2024 SchoolPost. The official voice of schools.
+              © 2024 EduNotice. The official voice of schools.
             </p>
           </div>
         </div>

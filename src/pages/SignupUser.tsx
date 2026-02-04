@@ -4,9 +4,17 @@ import { GraduationCap, User, Mail, Lock, Image, ArrowRight, ArrowLeft, Loader2 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { createUser, getUserByEmail } from '@/lib/firebase';
+import { INDIAN_STATES_AND_CITIES } from '@/lib/locations';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -20,8 +28,11 @@ export default function SignupUser() {
     email: '',
     password: '',
     profilePhotoUrl: '',
+    state: '',
     city: '',
   });
+
+  const availableCities = formData.state ? INDIAN_STATES_AND_CITIES[formData.state] || [] : [];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +57,7 @@ export default function SignupUser() {
         email: formData.email,
         password: formData.password,
         profilePhotoUrl: formData.profilePhotoUrl || undefined,
+        state: formData.state,
         city: formData.city,
         userType: 'user',
       });
@@ -53,7 +65,7 @@ export default function SignupUser() {
       login(user);
       toast({
         title: "Account created!",
-        description: `Welcome to SchoolPost, ${user.name}!`,
+        description: `Welcome to EduNotice, ${user.name}!`,
       });
       navigate('/feed');
     } catch (error) {
@@ -81,10 +93,8 @@ export default function SignupUser() {
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground">
-                <GraduationCap className="h-5 w-5" />
-              </div>
-              <span className="font-bold text-xl text-foreground">SchoolPost</span>
+              <img src="/logo.png" alt="EduNotice" className="w-10 h-10 object-contain" />
+              <span className="font-bold text-xl text-foreground">EduNotice</span>
             </div>
             <CardTitle className="text-2xl">Create Your Account</CardTitle>
             <CardDescription>
@@ -153,16 +163,45 @@ export default function SignupUser() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  placeholder="Your city"
-                  value={formData.city}
-                  onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                  required
-                  disabled={isLoading}
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="state">State</Label>
+                  <Select
+                    value={formData.state}
+                    onValueChange={(value) => setFormData({ ...formData, state: value, city: '' })}
+                    disabled={isLoading}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="State" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.keys(INDIAN_STATES_AND_CITIES).map((state) => (
+                        <SelectItem key={state} value={state}>
+                          {state}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="city">City</Label>
+                  <Select
+                    value={formData.city}
+                    onValueChange={(value) => setFormData({ ...formData, city: value })}
+                    disabled={isLoading || !formData.state}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="City" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableCities.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <div className="space-y-2">

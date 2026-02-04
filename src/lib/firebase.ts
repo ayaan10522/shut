@@ -23,6 +23,7 @@ export interface UserData {
   profilePhotoUrl?: string;
   userType: 'school' | 'user';
   city?: string;
+  state?: string;
   schoolName?: string;
   address?: string;
   phone?: string;

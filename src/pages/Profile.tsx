@@ -6,6 +6,13 @@ import { PostCard } from '@/components/PostCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,6 +21,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { updateUserProfile, getPostsBySchool, getSavedPosts, getFollowedSchools, type PostData, type UserData } from '@/lib/firebase';
+import { INDIAN_STATES_AND_CITIES } from '@/lib/locations';
 import { User, Bookmark, Users, FileText, MapPin, Edit2, Save, X } from 'lucide-react';
 import type { Post } from '@/types';
 
@@ -30,8 +38,11 @@ export default function Profile() {
   
   // Edit form state
   const [editName, setEditName] = useState('');
+  const [editState, setEditState] = useState('');
   const [editCity, setEditCity] = useState('');
   const [editPhoto, setEditPhoto] = useState('');
+
+  const availableCities = editState ? INDIAN_STATES_AND_CITIES[editState] || [] : [];
 
   useEffect(() => {
     if (!user) {
@@ -40,6 +51,7 @@ export default function Profile() {
     }
     
     setEditName(user.schoolName || user.name);
+    setEditState(user.state || '');
     setEditCity(user.city || '');
     setEditPhoto(user.profilePhotoUrl || '');
     
@@ -94,6 +106,7 @@ export default function Profile() {
     try {
       const updates: Partial<UserData> = {
         name: editName,
+        state: editState,
         city: editCity,
         profilePhotoUrl: editPhoto,
       };
@@ -201,13 +214,47 @@ export default function Profile() {
                     onChange={(e) => setEditName(e.target.value)}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="city"
-                    value={editCity}
-                    onChange={(e) => setEditCity(e.target.value)}
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="state">State</Label>
+                    <Select
+                      value={editState}
+                      onValueChange={(value) => {
+                        setEditState(value);
+                        setEditCity('');
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="State" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.keys(INDIAN_STATES_AND_CITIES).map((state) => (
+                          <SelectItem key={state} value={state}>
+                            {state}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="city">City</Label>
+                    <Select
+                      value={editCity}
+                      onValueChange={setEditCity}
+                      disabled={!editState}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="City" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {availableCities.map((city) => (
+                          <SelectItem key={city} value={city}>
+                            {city}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="photo">Profile Photo URL</Label>

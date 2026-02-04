@@ -65,10 +65,8 @@ export default function Login() {
         <Card className="shadow-xl">
           <CardHeader className="text-center pb-4">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground">
-                <GraduationCap className="h-5 w-5" />
-              </div>
-              <span className="font-bold text-xl text-foreground">SchoolPost</span>
+              <img src="/logo.png" alt="EduNotice" className="w-10 h-10 object-contain" />
+              <span className="font-bold text-xl text-foreground">EduNotice</span>
             </div>
             <CardTitle className="text-2xl">Welcome Back</CardTitle>
             <CardDescription>
